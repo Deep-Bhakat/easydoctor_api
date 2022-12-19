@@ -28,11 +28,13 @@ app.use(
     next();
 });
 
-
+app.get('/',(req,res,next)=>{
+    res.send('<html><body><h1>Hello!</h1></body></html>');
+})
 app.use(errorHandlerMiddleware);
 
 con.connect((err)=>{
     if (err) console.log(err);
-    // console.log("Connected!");
+    console.log("Connected!");
     app.listen(process.env.PORT || 3000);
 });
