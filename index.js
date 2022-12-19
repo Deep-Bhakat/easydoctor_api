@@ -1,0 +1,38 @@
+const express = require('express')
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+const helmet = require('helmet');
+const con = require('./utils/database');
+const app = express()
+
+//errorhandler import
+const errorHandlerMiddleware = require('./utils/errorHandler');
+const catchAsyncErrors = require('./utils/catchAsyncErrors');
+
+
+app.use(express.json());
+app.use(cookieParser());
+
+//setting up config file
+dotenv.config({path:'config/config.env'});
+app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    })
+  );
+ //to prevent CORS
+ app.use((req,res,next)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
+
+app.use(errorHandlerMiddleware);
+
+con.connect((err)=>{
+    if (err) console.log(err);
+    // console.log("Connected!");
+    app.listen(process.env.PORT || 3000);
+});
