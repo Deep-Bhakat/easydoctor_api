@@ -33,7 +33,7 @@ app.use(
 app.get('/',(req,res,next)=>{
     res.send('<html><body><h1>Hello!</h1></body></html>');
 })
-app.use('/doctor',doctorRoutes);
+app.use('/api/doctor',doctorRoutes);
 app.use(errorHandlerMiddleware);
 
 con.connect((err)=>{
