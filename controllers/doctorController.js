@@ -7,6 +7,10 @@ exports.checkPhone = catchAsyncError(async (req,res,next) => {
     const {phone} = req.params;
 
     con.query(`SELECT * FROM employee_master WHERE emp_cnct=${phone} and job_role='doctor'`, function (err, result, fields) {
+        console.log(result);
+        if(!result){
+            return next(new ErrorHandler('Query failed!', 500));
+        }
         if(result.length>0){
             return res.status(200).json({
                 success:true,
