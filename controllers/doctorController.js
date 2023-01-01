@@ -42,6 +42,7 @@ exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
     const dd = Date.now();
 
     var lastId;
+    var data;
     con.query(`INSERT INTO doctor_master SET
     title="Dr",
     doctor_name='${name}',
@@ -57,11 +58,7 @@ exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
         }
 
         lastId = result.insertId;
-    })
-
-    //employee master
-    
-    con.query(`INSERT INTO employee_master SET
+        con.query(`INSERT INTO employee_master SET
     user_type="1",
     emp_name='${name}',
    job_role="doctor",
@@ -76,10 +73,23 @@ exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
         if(err){
             return next(new ErrorHandler(err.message, 500));
         }
+        con.query(`SELECT * FROM doctor_master WHERE id=${lastId}`, function(err,result) {
+            if(err){
+                return next(new ErrorHandler(err.message, 500));
+            }
+    
+            return res.status(200).json({
+                success:true,
+                message: 'Doctor added successfully!',
+                data:result
+            });
+        })
     });
+    })
 
-    return res.status(200).json({
-        success:true,
-        message: 'Doctor added successfully!'
-    });
+    
+    
+
+    
+   
 });
