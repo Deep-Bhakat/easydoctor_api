@@ -6,7 +6,7 @@ const con = require('./utils/database');
 const app = express()
 
 //errorhandler import
-const errorHandlerMiddleware = require('./utils/errorHandler');
+const errorHandlerMiddleware = require('./middleware/errorHandler');
 const catchAsyncErrors = require('./utils/catchAsyncErrors');
 
 //routes
