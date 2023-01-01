@@ -1,9 +1,9 @@
 var mysql = require('mysql2');
 
 var con = mysql.createConnection({
-  host: "localhost",
-  user: "eazydoctor",
+  host: "MYSQL5039.site4now.net",
+  user: "a926dd_doctor",
   password: "Apiece_1000",
-  database: "doctor"
+  database: "db_a926dd_doctor"
 });
 module.exports = con;
