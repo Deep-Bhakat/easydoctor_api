@@ -9,6 +9,8 @@ const app = express()
 const errorHandlerMiddleware = require('./utils/errorHandler');
 const catchAsyncErrors = require('./utils/catchAsyncErrors');
 
+//routes
+const doctorRoutes = require('./routes/doctorRoutes')
 
 app.use(express.json());
 app.use(cookieParser());
@@ -31,6 +33,7 @@ app.use(
 app.get('/',(req,res,next)=>{
     res.send('<html><body><h1>Hello!</h1></body></html>');
 })
+app.use('/doctor',doctorRoutes);
 app.use(errorHandlerMiddleware);
 
 con.connect((err)=>{
