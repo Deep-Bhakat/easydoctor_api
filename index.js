@@ -40,6 +40,8 @@ app.use(errorHandlerMiddleware);
     // if (err) console.log(err);
     app.listen(process.env.PORT || 3000,(err)=>{
       console.log("Connected!");
-
+      setInterval(function () {
+        con.query('SELECT 1');
+    }, 5000);
     });
 // });
