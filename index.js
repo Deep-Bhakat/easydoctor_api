@@ -36,8 +36,10 @@ app.get('/',(req,res,next)=>{
 app.use('/api/doctor',doctorRoutes);
 app.use(errorHandlerMiddleware);
 
-con.connect((err)=>{
-    if (err) console.log(err);
-    console.log("Connected!");
-    app.listen(process.env.PORT || 3000);
-});
+// con.connect((err)=>{
+    // if (err) console.log(err);
+    app.listen(process.env.PORT || 3000,(err)=>{
+      console.log("Connected!");
+
+    });
+// });
