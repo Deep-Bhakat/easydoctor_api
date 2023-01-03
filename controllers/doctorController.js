@@ -39,8 +39,11 @@ function generateRandomString(length = 10) {
 exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
     const {name,phone,email,date} = req.body;
     const roomId = generateRandomString();
-    const dd = Date.now();
-
+    const dd = Date.now().toLocaleString();
+    console.log(name);
+    console.log(phone);
+    console.log(email);
+    console.log(date);
     var lastId;
     var data;
     con.query(`INSERT INTO doctor_master SET
