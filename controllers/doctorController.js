@@ -94,7 +94,7 @@ exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
    
 });
 
-exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
+exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
     const {docId,address,pincode,city,state,
         docImgUrl,isVerified,docChamberDetails,
         registrationNo,qualification,department,about,
