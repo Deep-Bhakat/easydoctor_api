@@ -121,7 +121,7 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
             console.log(err);
             return next(new ErrorHandler(err.message, 500));
         }
-
+        console.log(docChamberDetails);
         docChamberDetails.forEach(element => {
             console.log(element);
             con.query(`INSERT INTO doctor_chambers SET
