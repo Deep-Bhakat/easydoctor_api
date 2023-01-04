@@ -40,10 +40,7 @@ exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
     const {name,phone,email,date} = req.body;
     const roomId = generateRandomString();
     const dd = Date.now().toLocaleString();
-    console.log(name);
-    console.log(phone);
-    console.log(email);
-    console.log(date);
+    
     var lastId;
     var data;
     con.query(`INSERT INTO doctor_master SET
@@ -96,3 +93,61 @@ exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
     
    
 });
+
+exports.addDoctorDetails = catchAsyncError(async (req,res,next) => {
+    const {docId,address,pincode,city,state,
+        docImgUrl,isVerified,docChamberDetails,
+        registrationNo,qualification,department,about,
+    bankName,accountNo,ifscCode,branchName} = req.body;
+    
+    
+    con.query(`UPDATE doctor_master SET
+    address="${address}",
+    pincode='${pincode}',
+    city='${city}',
+    state='${state}',
+    regn_no='${registrationNo}',
+    qulifica='${qualification}',
+    about_doctor='${about}',
+    department='${department}',
+    status='${isVerified}',
+    bank_name='${bankName}',
+    account_no='${accountNo}',
+    ifsc_code='${ifscCode}',
+    branch_code='${branchName}',
+    image='${docImgUrl ? docImgUrl : 'avatar.jpg'}' WHERE id='${docId}'
+    `, function(err,result) {
+        if(err){
+            return next(new ErrorHandler(err.message, 500));
+        }
+
+        docChamberDetails.forEach(element => {
+            console.log(element);
+            con.query(`INSERT INTO doctor_chambers SET
+            doctor_id="${docId}",
+            chamber_name='${element.chamberName}',           
+            address='${element.address}',
+            pincode='${element.pincode}',
+            fee='${element.fee}'
+             WHERE id='${docId}'
+            `, function(err,result) {
+                if(err){
+                    return next(new ErrorHandler(err.message, 500));
+                }
+
+                const chamberId = result.insertId;
+
+                // docChamberDetails.
+        });
+       
+    
+           
+        })
+        return res.status(200).json({
+            success:true,
+            message: 'Doctor details and chamber details updated successfully!',
+            data:result
+        });
+    });
+});
+    
