@@ -118,6 +118,7 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
     image='${docImgUrl ? docImgUrl : 'avatar.jpg'}' WHERE id='${docId}'
     `, function(err,result) {
         if(err){
+            console.log(err);
             return next(new ErrorHandler(err.message, 500));
         }
 
@@ -132,6 +133,8 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
              WHERE id='${docId}'
             `, function(err,result) {
                 if(err){
+            console.log(err);
+
                     return next(new ErrorHandler(err.message, 500));
                 }
 
