@@ -127,7 +127,7 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
             address='${docChamberDetails[i].address}',
             pincode='${docChamberDetails[i].pincode}',
             fee='${docChamberDetails[i].fee}',
-            date='${dd}'
+            dated='${dd}'
             `, function(err,result) {
                 if(err){
                     console.log(err);
