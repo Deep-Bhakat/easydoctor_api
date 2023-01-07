@@ -100,7 +100,6 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
         registrationNo,qualification,department,about,
     bankName,accountNo,ifscCode,branchName} = req.body;
     const dd = Date.now().toLocaleString();
-    console.log(req.body);
     con.query(`UPDATE doctor_master SET
     address="${address}",
     pincode='${pincode}',
@@ -122,6 +121,7 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
             return next(new ErrorHandler(err.message, 500));
         }
         for(var i=0;i<docChamberDetails.length;i++) {
+            console.log(docChamberDetails[i]);
             con.query(`INSERT INTO doctor_chambers SET
             doctor_id="${docId}",
             chamber_name='${docChamberDetails[i].chamberName}',           
