@@ -99,9 +99,8 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
         docImgUrl,isVerified,docChamberDetails,
         registrationNo,qualification,department,about,
     bankName,accountNo,ifscCode,branchName} = req.body;
-    
     const dd = Date.now().toLocaleString();
-    
+    console.log(req.body);
     con.query(`UPDATE doctor_master SET
     address="${address}",
     pincode='${pincode}',
