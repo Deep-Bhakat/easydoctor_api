@@ -137,6 +137,9 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
                 }
 
                 const chamberId = result.insertId;
+                console.log(docChamberDetails[i].timing);
+                console.log('-------------------------------------------------------');
+                console.log(docChamberDetails[i]['timing']);
 
                 // docChamberDetails.timimg
                 for(var j=0;j<docChamberDetails[i].timing.length;j++) {
