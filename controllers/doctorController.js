@@ -121,7 +121,8 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
             return next(new ErrorHandler(err.message, 500));
         }
         for(var i=0;i<docChamberDetails.length;i++) {
-            console.log(docChamberDetails[i]);
+        
+            const test = docChamberDetails[i];
             con.query(`INSERT INTO doctor_chambers SET
             doctor_id="${docId}",
             chamber_name='${docChamberDetails[i].chamberName}',           
@@ -136,19 +137,16 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
                     return next(new ErrorHandler(err.message, 500));
                 }
 
-                const chamberId = result.insertId;
-                console.log(docChamberDetails[i].timing);
-                console.log('-------------------------------------------------------');
-                console.log(docChamberDetails[i]['timing']);
+                const chamberId = result.insertId;            
 
                 // docChamberDetails.timimg
-                for(var j=0;j<docChamberDetails[i].timing.length;j++) {
+                for(var j=0;j<test.timing.length;j++) {
                     con.query(`INSERT INTO doctor_chamber_timings SET
             doc_id="${docId}",
             chamber_id='${chamberId}',           
-            from_time='${docChamberDetails[i].timing[j].openingTime}',
-            to_time='${docChamberDetails[i].timing[j].closingTime}',
-            days='${docChamberDetails[i].timing[j].days}',
+            from_time='${test.timing[j].openingTime}',
+            to_time='${test.timing[j].closingTime}',
+            days='${test.timing[j].days}',
             status='1',
             date='${dd}'
             `, function(err,result) {
