@@ -121,13 +121,13 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
             return next(new ErrorHandler(err.message, 500));
         }
         for(var i=0;i<docChamberDetails.length;i++) {
-            console.log(docChamberDetails[i]);
             con.query(`INSERT INTO doctor_chambers SET
             doctor_id="${docId}",
             chamber_name='${docChamberDetails[i].chamberName}',           
             address='${docChamberDetails[i].address}',
             pincode='${docChamberDetails[i].pincode}',
-            fee='${docChamberDetails[i].fee}'
+            fee='${docChamberDetails[i].fee}',
+            date='${dd}'
             `, function(err,result) {
                 if(err){
                     console.log(err);
@@ -138,13 +138,16 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
                 const chamberId = result.insertId;
 
                 // docChamberDetails.timimg
-                for(var j=0;j<docChamberDetails[i].timing.length;j++) {
+                var test = JSON.parse(docChamberDetails[i].timing);
+                for(var j=0;j<test.length;j++) {
+            console.log(test[j]);
+
                     con.query(`INSERT INTO doctor_chamber_timings SET
             doc_id="${docId}",
             chamber_id='${chamberId}',           
-            from_time='${docChamberDetails[i].timing[j].openingTime}',
-            to_time='${docChamberDetails[i].timing[j].openingTime}',
-            days='${docChamberDetails[i].timing[j].days}',
+            from_time='${test[j].openingTime}',
+            to_time='${test[j].openingTime}',
+            days='${test[j].days}',
             status='1',
             date='${dd}'
             `, function(err,result) {
