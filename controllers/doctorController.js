@@ -100,6 +100,7 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
         registrationNo,qualification,department,about,
     bankName,accountNo,ifscCode,branchName} = req.body;
     
+    const dd = Date.now().toLocaleString();
     
     con.query(`UPDATE doctor_master SET
     address="${address}",
@@ -121,31 +122,49 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
             console.log(err);
             return next(new ErrorHandler(err.message, 500));
         }
-        console.log(docChamberDetails);
-        docChamberDetails.forEach(element => {
-            console.log(element);
+        for(var i=0;i<docChamberDetails.length;i++) {
             con.query(`INSERT INTO doctor_chambers SET
             doctor_id="${docId}",
-            chamber_name='${element.chamberName}',           
-            address='${element.address}',
-            pincode='${element.pincode}',
-            fee='${element.fee}'
-             WHERE id='${docId}'
+            chamber_name='${docChamberDetails[i].chamberName}',           
+            address='${docChamberDetails[i].address}',
+            pincode='${docChamberDetails[i].pincode}',
+            fee='${docChamberDetails[i].fee}'
             `, function(err,result) {
                 if(err){
-            console.log(err);
+                    console.log(err);
 
                     return next(new ErrorHandler(err.message, 500));
                 }
 
                 const chamberId = result.insertId;
 
-                // docChamberDetails.
+                // docChamberDetails.timimg
+                for(var j=0;j<docChamberDetails[i].timing.length;j++) {
+                    con.query(`INSERT INTO doctor_chamber_timings SET
+            doc_id="${docId}",
+            chamber_id='${chamberId}',           
+            from_time='${docChamberDetails[i].timing[j].openingTime}',
+            to_time='${docChamberDetails[i].timing[j].openingTime}',
+            days='${docChamberDetails[i].timing[j].days}',
+            status='1',
+            date='${dd}'
+            `, function(err,result) {
+                if(err){
+                    console.log(err);
+
+                    return next(new ErrorHandler(err.message, 500));
+                }
+
+
+                
+        });
+                
+                }
         });
        
     
            
-        })
+        }
         return res.status(200).json({
             success:true,
             message: 'Doctor details and chamber details updated successfully!',
