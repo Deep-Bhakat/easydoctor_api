@@ -3,7 +3,7 @@ const catchAsyncError = require('../utils/catchAsyncErrors');
 const ErrorHandler = require('../utils/errorHandler');
 const connection = require('../utils/database');
 const con = require('../utils/database');
-
+const jwt = require('jsonwebtoken');
 exports.checkPhone = catchAsyncError(async (req,res,next) => {
     const {phone} = req.params;
 
@@ -174,3 +174,36 @@ exports.addMoreDoctorDetails = catchAsyncError(async (req,res,next) => {
     });
 });
     
+
+exports.login = catchAsyncError(async (req,res,next) =>{
+    const {username, password} = req.body;
+    
+   con.query(`SELECT * FROM doctor_master WHERE mobile='${username}'`, function (err,result) {
+    if (err || result.length==0) {
+        return next(new ErrorHandler('User doesnt exist!',500));     
+      }    
+
+      con.query(`SELECT * FROM doctor_master WHERE mobile='${username}' and password='${password}'`, function (err,result) {
+        if (err || result.length==0) {
+            return next(new ErrorHandler('Password is invalid!',400));     
+          }else{
+            var token = jwt.sign({
+                id: result[0].id
+              }, process.env.JWT_DOCTOR_SECRET_KEY, { expiresIn: process.env.JWT_DOCTOR_EXPIRES_TIME });   
+              
+              
+              return res.status(200).json({
+                success:true,
+                token,
+                data:result,
+                message:'Successfully logged in!'
+            });
+          }    
+    
+          
+       })
+   })
+
+ 
+ });
+ 
