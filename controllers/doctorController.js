@@ -183,22 +183,39 @@ exports.login = catchAsyncError(async (req,res,next) =>{
         return next(new ErrorHandler('User doesnt exist!',500));     
       }    
 
-      con.query(`SELECT * FROM doctor_master WHERE mobile='${username}' and password='${password}'`, function (err,result) {
+      con.query(`SELECT * FROM doctor_master WHERE mobile='${username}' and password='${password}' order by id desc`, function (err,result) {
         if (err || result.length==0) {
             return next(new ErrorHandler('Password is invalid!',400));     
-          }else{
+          }
+          const doctorData = result;
             var token = jwt.sign({
                 id: result[0].id
               }, process.env.JWT_DOCTOR_SECRET_KEY, { expiresIn: process.env.JWT_DOCTOR_EXPIRES_TIME });   
               
-              
+              con.query(`SELECT * FROM doctor_chambers WHERE doctor_id='${doctorData[0].id}'`, function (err,result) {
+                if (err ) {
+                    return next(new ErrorHandler(err.message,400));     
+                  } 
+          const doctorChamberData = result;
+
+                  con.query(`SELECT * FROM doctor_chamber_timings WHERE doc_id='${doctorData[0].id}' `, function (err,result) {
+                   console.log(`SELECT * FROM doctor_chamber_timings WHERE doc_id='${doctorData[0].id}' `);
+                    if (err) {
+                        return next(new ErrorHandler(err.message,400));     
+                    } 
+          const chamberTimings = result;
+
               return res.status(200).json({
                 success:true,
                 token,
-                data:result,
+                doctorData:doctorData,
+                chamberData:doctorChamberData,
+                chamberTimings:chamberTimings,
                 message:'Successfully logged in!'
             });
-          }    
+          
+        });
+    });
     
           
        })
