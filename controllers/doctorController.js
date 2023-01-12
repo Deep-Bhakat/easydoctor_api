@@ -199,7 +199,7 @@ exports.login = catchAsyncError(async (req,res,next) =>{
           const doctorChamberData = result;
 
                   con.query(`SELECT * FROM doctor_chamber_timings WHERE doc_id='${doctorData[0].id}' `, function (err,result) {
-                   console.log(`SELECT * FROM doctor_chamber_timings WHERE doc_id='${doctorData[0].id}' `);
+                //    console.log(`SELECT * FROM doctor_chamber_timings WHERE doc_id='${doctorData[0].id}' `);
                     if (err) {
                         return next(new ErrorHandler(err.message,400));     
                     } 
@@ -224,3 +224,79 @@ exports.login = catchAsyncError(async (req,res,next) =>{
  
  });
  
+ exports.patientRegistration = catchAsyncError(async (req,res,next) =>{
+    const {name,mobile,pincode,
+        gender,age_years,age_month,
+        age_days,diagnosis,payment_type,chamber_id,
+    refer_type,refer_id,refer_name,
+advance,date,time} = req.body;
+
+        con.query(`INSERT INTO pre_registration SET
+            doc_chamber_id='${chamber_id}',
+            pati_name='${name}',
+            age_years='${age_years}',
+            age_mon='${age_month}',
+            age_days='${age_days}',
+            gender='${gender}',
+            mobile='${mobile}',
+            disease_id='${diagnosis}',
+            pincode='${pincode}',
+            payment_mode='${payment_type}',
+            refer_type='${refer_type}',
+            date='${date}',
+            time='${time}'
+            `, function(err,result) {
+                if(err){
+                    return next(new ErrorHandler(err.message,500));     
+
+                }                
+        con.query(`INSERT INTO patient_master_opd SET
+        doctor_id="${refer_id}",
+        pati_name='${name}',
+        gender='${gender}',
+        age_years='${age_years}',
+            age_mon='${age_month}',
+            age_days='${age_days}',
+        mobile='${mobile}',
+        pin_code='${pincode}',
+        disease_id='${diagnosis}',
+        doc_id="${refer_id}",
+        payment_mode='${payment_type}',
+        chamber_id='${chamber_id}',        
+        status="1",
+        date='${date}',
+        time='${time}'
+        `, function(err,result) {
+            if(err){
+                return next(new ErrorHandler(err.message,500));     
+
+            }
+            con.query(`INSERT INTO employee_master SET
+            user_type="2",
+								 emp_name="${name}",
+								job_role="patient",
+								user_name="${mobile}",
+								user_psswd="${mobile}",
+								emp_cnct="${mobile}",
+								status="1",
+								user_id="last_id",
+								doc_id="${refer_id}",
+                                date='${date}',
+                                `, function(err,result) {
+                if(err){
+                    return next(new ErrorHandler(err.message,500));     
+    
+                }
+                
+              return res.status(200).json({
+                success:true,
+                message:'Successfully added patient!'
+            }); 
+                
+            });
+            
+        });
+            });
+ });
+
+ // getDiseases
