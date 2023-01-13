@@ -300,3 +300,16 @@ advance,date,time} = req.body;
  });
 
  // getDiseases
+ exports.getDiseases = catchAsyncError(async (req,res,next) =>{
+    con.query(`SELECT * FROM disease_master`, function(err,result){
+        if(err){
+            return next(new ErrorHandler(err.message,500));
+        }
+
+        res.status(200).json({
+            success:true,
+            diseases:result,
+            message:'Disease fetched successfully!'
+        })
+    })
+ });
