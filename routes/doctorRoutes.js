@@ -10,7 +10,7 @@ router.post('/login', doctorController.login);
 router.post('/patientRegistration', doctorController.patientRegistration);
 router.get('/getDiseases', doctorController.getDiseases);
 router.get('/getTodaysPatients/:doc_id', doctorController.getTodaysPatients);
-router.post('/getAllPatients/:doc_id', doctorController.getAllPatients);
+router.get('/getAllPatients/:doc_id', doctorController.getAllPatients);
 
 
 module.exports = router;
