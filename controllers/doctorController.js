@@ -313,3 +313,20 @@ advance,date,time} = req.body;
         })
     })
  });
+
+ exports.getTodaysPatients = catchAsyncError(async (req,res,next) =>{
+    const {doc_id} = req.params;
+    con.query(`SELECT * FROM patient_master_opd where status='1' 
+    or revisit_status='1'  
+    and doctor_id='${doc_id}'  ORDER BY id DESC limit 150`, function(err,result){
+        if(err){
+            return next(new ErrorHandler(err.message,500));
+        }
+
+        res.status(200).json({
+            success:true,
+            patients:result,
+            message:'Current Patients fetched successfully!'
+        })
+    })
+ });
