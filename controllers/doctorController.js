@@ -330,3 +330,19 @@ advance,date,time} = req.body;
         })
     })
  });
+ exports.getAllPatients = catchAsyncError(async (req,res,next) =>{
+    const {doc_id} = req.params;
+    con.query(`SELECT * FROM patient_master_opd where status='2' 
+    and opd='opd' and revisit_status='0' and doctor_id='$doc_id' 
+     ORDER BY id DESC limit 150`, function(err,result){
+        if(err){
+            return next(new ErrorHandler(err.message,500));
+        }
+
+        res.status(200).json({
+            success:true,
+            patients:result,
+            message:'All Patients fetched successfully!'
+        })
+    })
+ });
