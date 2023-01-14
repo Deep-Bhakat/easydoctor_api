@@ -281,7 +281,7 @@ advance,date,time} = req.body;
 								status="1",
 								user_id="last_id",
 								doc_id="${refer_id}",
-                                date='${date}',
+                                date='${date}'
                                 `, function(err,result) {
                 if(err){
                     return next(new ErrorHandler(err.message,500));     
