@@ -346,3 +346,25 @@ advance,date,time} = req.body;
         })
     })
  });
+//get issue tests
+// get all tests from database
+//get medicine
+// get all medicine from database
+//prescribe 
+ //bp oxygen temp pulse weight height complication_id past_history test_id medicine_id no_of_days 
+ //medicine_time per_day_use comments advice patient_id doc_id chamber_id  
+
+ exports.getComplications = catchAsyncError(async (req,res,next) =>{
+    const {disease_name} = req.body;
+
+    con.query(`SELECT * FROM disease_master WHERE dise_name LIKE '%${disease_name}%'`, function(err,result) {
+        if(err){
+            return next(new ErrorHandler(err.message,500));
+        }
+
+        res.status(200).json({
+            success:true,
+            diseases:result,
+        });
+    });
+ });
