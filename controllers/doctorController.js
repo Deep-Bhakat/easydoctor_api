@@ -346,10 +346,7 @@ advance,date,time} = req.body;
         })
     })
  });
-//get issue tests
-// get all tests from database
-//get medicine
-// get all medicine from database
+
 //prescribe 
  //bp oxygen temp pulse weight height complication_id past_history test_id medicine_id no_of_days 
  //medicine_time per_day_use comments advice patient_id doc_id chamber_id  
@@ -368,20 +365,47 @@ advance,date,time} = req.body;
         });
     });
  });
-//  exports.getTests = catchAsyncError(async (req,res,next) =>{
-//     const {test_name} = req.body;
+ exports.getTests = catchAsyncError(async (req,res,next) =>{
+    const {test_name} = req.body;
 
-//     con.query(`SELECT * FROM blood_master WHERE sub_type LIKE '%${disease_name}%'`, function(err,result) {
-//         if(err){
-//             return next(new ErrorHandler(err.message,500));
-//         }
-//         const blood_tests = result;
-//         res.status(200).json({
-//             success:true,
-//             diseases:result,
-//         });
-//     });
-//  });
+    con.query(`SELECT * FROM blood_master WHERE sub_type LIKE '%${test_name}%'`, function(err,result) {
+        if(err){
+            return next(new ErrorHandler(err.message,500));
+        }
+        const blood_tests = result;
+        con.query(`SELECT * FROM stool_master WHERE sub_type LIKE '%${test_name}%'`, function(err,result) {
+            if(err){
+                return next(new ErrorHandler(err.message,500));
+            }
+            const stool_tests = result;
+            con.query(`SELECT * FROM imageing_master WHERE sub_type LIKE '%${test_name}%'`, function(err,result) {
+                if(err){
+                    return next(new ErrorHandler(err.message,500));
+                }
+                const imageing_tests = result;
+        
+                con.query(`SELECT * FROM special_master WHERE sub_type LIKE '%${test_name}%'`, function(err,result) {
+                    if(err){
+                        return next(new ErrorHandler(err.message,500));
+                    }
+                    res.status(200).json({
+                        success:true,
+                        blood_tests:blood_tests,
+                        special_tests:result,
+                        stool_tests:stool_tests,
+                        imageing_tests:imageing_tests
+
+                    });
+                    
+                });
+            });
+            
+        });
+        
+        
+    });
+  
+ });
 
 exports.getMedicines = catchAsyncError(async (req,res,next) =>{
     const {medicine_name} = req.body;
