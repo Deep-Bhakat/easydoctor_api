@@ -12,6 +12,8 @@ router.get('/getDiseases', doctorController.getDiseases);
 router.get('/getTodaysPatients/:doc_id', doctorController.getTodaysPatients);
 router.get('/getAllPatients/:doc_id', doctorController.getAllPatients);
 router.post('/getComplications', doctorController.getComplications);
+// router.post('/getTests', doctorController.getTests);
+router.post('/getMedicines', doctorController.getMedicines);
 
 
 module.exports = router;

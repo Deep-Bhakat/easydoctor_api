@@ -368,3 +368,32 @@ advance,date,time} = req.body;
         });
     });
  });
+//  exports.getTests = catchAsyncError(async (req,res,next) =>{
+//     const {test_name} = req.body;
+
+//     con.query(`SELECT * FROM blood_master WHERE sub_type LIKE '%${disease_name}%'`, function(err,result) {
+//         if(err){
+//             return next(new ErrorHandler(err.message,500));
+//         }
+//         const blood_tests = result;
+//         res.status(200).json({
+//             success:true,
+//             diseases:result,
+//         });
+//     });
+//  });
+
+exports.getMedicines = catchAsyncError(async (req,res,next) =>{
+    const {medicine_name} = req.body;
+
+    con.query(`SELECT * FROM ph_medicine_master WHERE medici_name LIKE '%${medicine_name}%'`, function(err,result) {
+        if(err){
+            return next(new ErrorHandler(err.message,500));
+        }
+
+        res.status(200).json({
+            success:true,
+            medicines:result,
+        });
+    });
+ });
