@@ -451,7 +451,7 @@ exports.prescribe = catchAsyncError(async (req,res,next) =>{
                 }
                 con.query(`INSERT INTO patient_past_history SET
                 patient_id='${patient_id}',
-                past_history='${past_history}',
+                past_history='${Buffer.from(past_history).toString('base64')}',
                 past_file='${file}',
                 dated='${date}'`, function(err,result){
                     if(err){
