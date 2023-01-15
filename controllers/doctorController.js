@@ -477,6 +477,7 @@ exports.prescribe2 = catchAsyncError(async (req,res,next) =>{
         con.query(`INSERT INTO temp_tests SET
         patient_id='${patient_id}',
         test_type='${test_type}',
+        test_id='${test_id}',
         test_name='${test_name}',
         files='${files}',
         dated='${date}'`, function(err,result){
