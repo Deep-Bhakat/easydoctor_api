@@ -421,3 +421,49 @@ exports.getMedicines = catchAsyncError(async (req,res,next) =>{
         });
     });
  });
+
+exports.prescribe = catchAsyncError(async (req,res,next) =>{
+    const {patient_id,bp,pulse,temp,oxygen,height,weight,
+    disease_id,disease_desc,disease_name,
+    past_history,file,date} = req.body;
+
+        con.query(`INSERT INTO patient_general_info SET
+        patient_id='${patient_id}',
+        bp='${bp}',
+        weight='${weight}',
+        height='${height}',
+        tempreature='${temp}',
+        oxyzen='${oxygen}',
+        pulse='${pulse}',
+        dated='${date}'`, function(err,result){
+            if(err){
+                return next(new ErrorHandler(err.message,500));
+            }
+
+            con.query(`INSERT INTO temp_disease SET
+            patient_id='${patient_id}',
+            disease_id='${disease_id}',
+            disease_name='${disease_name}',
+            disease_desc='${disease_desc}',
+            dated='${date}'`, function(err,result){
+                if(err){
+                    return next(new ErrorHandler(err.message,500));
+                }
+                con.query(`INSERT INTO patient_past_history SET
+                patient_id='${patient_id}',
+                past_history='${past_history}',
+                past_file='${file}',
+                dated='${date}'`, function(err,result){
+                    if(err){
+                        return next(new ErrorHandler(err.message,500));
+                    }
+
+                    res.status(200).json({
+                        success:true,
+                        message:'Patient Data inserted successfully!'
+                    });
+                    
+                });
+            });
+        });
+});
