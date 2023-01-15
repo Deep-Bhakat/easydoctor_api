@@ -467,3 +467,53 @@ exports.prescribe = catchAsyncError(async (req,res,next) =>{
             });
         });
 });
+
+exports.prescribe2 = catchAsyncError(async (req,res,next) =>{
+    const {patient_id,test_type,test_id,test_name,files,
+    medicine_id,medicine_name,alternative_medicine,strength,unit,method,consume_session,consume_time,
+    per_day_use,number_of_days,medicine_qty,
+    advise,date} = req.body;
+
+        con.query(`INSERT INTO temp_tests SET
+        patient_id='${patient_id}',
+        test_type='${test_type}',
+        test_name='${test_name}',
+        files='${files}',
+        dated='${date}'`, function(err,result){
+            if(err){
+                return next(new ErrorHandler(err.message,500));
+            }
+
+            con.query(`INSERT INTO temp_medicines SET
+            patient_id='${patient_id}',
+            medicine_id='${medicine_id}',
+            medici_name='${medicine_name}',
+            alternative_medicine='${alternative_medicine}',
+            strength='${strength}',
+            unit='${unit}',
+            method='${method}',
+            consume_session='${consume_session}',
+            consume_time='${consume_time}',
+            per_day_use='${per_day_use}',
+            number_of_days='${number_of_days}',
+            medicine_qty='${medicine_qty}',
+            dated='${date}'`, function(err,result){
+                if(err){
+                    return next(new ErrorHandler(err.message,500));
+                }
+                con.query(`UPDATE patient_past_history SET              
+                advise='${advise}',
+                 WHERE  patient_id='${patient_id}',`, function(err,result){
+                    if(err){
+                        return next(new ErrorHandler(err.message,500));
+                    }
+
+                    res.status(200).json({
+                        success:true,
+                        message:'Patient Data inserted successfully!'
+                    });
+                    
+                });
+            });
+        });
+});
