@@ -1,10 +1,10 @@
 var mysql = require('mysql2');
 
 var con = mysql.createConnection({
-  host: "MYSQL5039.site4now.net",
-  user: "a926dd_doctor",
+  host: "MYSQL8003.site4now.net",
+  user: "a958e9_genesis",
   password: "Apiece_1000",
-  database: "db_a926dd_doctor",
+  database: "db_a958e9_genesis",
 });
 
 con.connect();
